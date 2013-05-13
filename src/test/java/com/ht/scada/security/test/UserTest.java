@@ -1,7 +1,7 @@
 package com.ht.scada.security.test;
 
-import com.ht.scada.common.user.entity.User;
 import com.ht.scada.security.ShiroDbRealm;
+import com.ht.scada.security.entity.User;
 import com.ht.scada.security.entity.UserRole;
 import com.ht.scada.security.service.UserService;
 import org.apache.shiro.SecurityUtils;
@@ -84,6 +84,8 @@ public class UserTest extends AbstractTestNGSpringContextTests {
 		assert currentUser.isPermitted("a:b");
 		assert !currentUser.isPermitted("a:c");
 		assert !currentUser.isPermitted("nop:delete");
+        assert !currentUser.isPermitted("menu:jiankong");
+        assert !currentUser.isPermitted("menu:lishi");
 	}
 	
 }
