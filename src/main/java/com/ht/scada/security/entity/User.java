@@ -33,9 +33,11 @@ public class User extends AbstractPersistable<Integer> {
 	private String password;
 	
 	private String name;
-	
-	@OneToOne(mappedBy="user", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	private UserExtInfo extInfo;
+	private String gender;
+	private String department;
+	private String email;
+	private String address;
+	private String realName;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="role_id")
@@ -87,5 +89,44 @@ public class User extends AbstractPersistable<Integer> {
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
 	}
+    
+    public String getGender() {
+        return gender;
+    }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
 }
