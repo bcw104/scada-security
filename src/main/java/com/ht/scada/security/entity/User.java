@@ -44,9 +44,14 @@ public class User extends AbstractPersistable<Integer> {
 	private UserRole userRole;
 	
 	@ElementCollection(fetch=FetchType.LAZY)
-	@CollectionTable(name = "T_Users_MajorTag")
+	@CollectionTable(name = "T_User_MajorTag")
 	@Column(name = "major_tag_id")
 	private Set<Integer> majorTagID;// user:edit,user:add
+	
+	@ElementCollection(fetch=FetchType.LAZY)
+	@CollectionTable(name = "T_User_endTag")
+	@Column(name = "end_tag_id")
+	private Set<Integer> endTagID;// user:edit,user:add
 	
 	public User() {
 	}
