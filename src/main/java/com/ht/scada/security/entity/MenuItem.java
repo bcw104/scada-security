@@ -21,6 +21,10 @@ public class MenuItem extends AbstractPersistable<Integer> {
 	@Column(nullable=false)
 	private String menuItemUrl;
 	
+	@Column(nullable=false)
+	private String pName;
+	
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="type_id")
     @JsonIgnore
