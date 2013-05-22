@@ -22,7 +22,15 @@ public class MenuItem extends AbstractPersistable<Integer> {
 	private String menuItemUrl;
 	
 	@Column(nullable=false)
-	private String pName;
+	private String pname;
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
 	
 	
 	@ManyToOne(fetch=FetchType.EAGER)
