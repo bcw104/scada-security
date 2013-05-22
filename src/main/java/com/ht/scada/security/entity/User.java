@@ -134,4 +134,19 @@ public class User extends AbstractPersistable<Integer> {
     public void setRealName(String realName) {
         this.realName = realName;
     }
+    public Set<Integer> getMajorTagID() {
+        return majorTagID;
+    }
+
+    public void setMajorTagID(Set<Integer> majorTagID) {
+        this.majorTagID = majorTagID;
+    }
+
+    public Set<Integer> getEndTagID() {
+        return endTagID;
+    }
+
+    public void setEndTagID(Set<Integer> endTagID) {
+        this.endTagID = endTagID;
+    }
 }
