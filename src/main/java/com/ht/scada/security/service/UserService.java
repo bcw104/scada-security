@@ -43,5 +43,7 @@ public interface UserService {
 
     void deleteUserRole(int id);
     
+    void saveUser(User newUser);
     
+    User findUserByUserID(int id);
 }

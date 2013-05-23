@@ -124,4 +124,25 @@ public class UserServiceImpl implements UserService {
         public UserExtInfo findUserExtInfoByUserID(int id){
             return userExtInfoDao.findByUserID(id);
         }
+        
+    /**
+    * 保存用户信息
+    * @param newUser 
+    * 2013-05-20 zhaowei Add
+    */
+    @Override
+    public void  saveUser(User newUser) {
+        userDao.save(newUser);
+	}
+    
+    /**
+     * 获得用户信息（根据用户ID）
+     * @param id
+     * @return 
+     * 2013-05-21 zhaowei Add
+     */
+    @Override
+    public User findUserByUserID(int id){
+        return userDao.findByUserID(id);
+    }
 }

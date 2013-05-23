@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.ht.scada.security.entity.User;
+import com.ht.scada.security.entity.UserExtInfo;
 
 public interface UserDao extends JpaRepository<User, Integer> {
 	
@@ -17,4 +18,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
 	@Modifying
 	@Query("update User u set u.password = ?1 where u.id = ?2")
 	public void updateUserPassword(String password, int id);
+    
+    @Query("select u from User u where u.id=?1")
+	public User findByUserID(int id);
 }
