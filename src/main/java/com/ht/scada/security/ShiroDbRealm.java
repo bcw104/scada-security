@@ -35,115 +35,119 @@ import java.util.Objects;
 
 public class ShiroDbRealm extends AuthorizingRealm {
 
-	public static final int HASH_INTERATIONS = 1024;
-	
-	protected UserService userService;
+    public static final int HASH_INTERATIONS = 1024;
+    protected UserService userService;
 
-	public ShiroDbRealm() {
-		setName("SampleRealm"); // This name must match the name in the User
-		// class's getPrincipals() method
-		//设定Password校验的Hash算法与迭代次数.
-		setCredentialsMatcher(new HashedCredentialsMatcher(Sha256Hash.ALGORITHM_NAME));
+    public ShiroDbRealm() {
+        setName("SampleRealm"); // This name must match the name in the User
+        // class's getPrincipals() method
+        //设定Password校验的Hash算法与迭代次数.
+        setCredentialsMatcher(new HashedCredentialsMatcher(Sha256Hash.ALGORITHM_NAME));
 //		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(Sha1Hash.ALGORITHM_NAME);
 //		matcher.setHashIterations(ShiroDbRealm.HASH_INTERATIONS);
 //		setCredentialsMatcher(matcher);
-	}
-	
-	@Autowired
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+    }
 
-	/**
-	 * 认证回调函数,登录时调用.
-	 */
-	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(
-			AuthenticationToken authcToken) throws AuthenticationException {
-		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		User user = userService.getUserByUsername(token.getUsername());
-		if (user != null) {
-			return new SimpleAuthenticationInfo(new ShiroUser(user.getId(),
-					user.getUsername(), user.getName()), user.getPassword(),
-					getName());
-		} else {
-			return null;
-		}
-	}
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
-	/**
-	 * 授权查询回调函数, 进行鉴权但缓存中无用户的授权信息时调用.
-	 */
-	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(
-			PrincipalCollection principals) {
-		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
-		User user = userService.getUserByUsername(shiroUser.userame);
-		if (user != null) {
-			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			UserRole role = user.getUserRole();
-			info.addRole(role.getName());
-			info.addStringPermissions(role.getPermissions());
-			return info;
-		} else {
-			return null;
-		}
-	}
+    /**
+     * 认证回调函数,登录时调用.
+     */
+    @Override
+    protected AuthenticationInfo doGetAuthenticationInfo(
+            AuthenticationToken authcToken) throws AuthenticationException {
+        UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+        User user = userService.getUserByUsername(token.getUsername());
+        if (user != null) {
+            return new SimpleAuthenticationInfo(new ShiroUser(user.getId(),
+                    user.getUsername(), user.getName()), user.getPassword(),
+                    getName());
+        } else {
+            return null;
+        }
+    }
 
+    /**
+     * 授权查询回调函数, 进行鉴权但缓存中无用户的授权信息时调用.
+     */
+    @Override
+    protected AuthorizationInfo doGetAuthorizationInfo(
+            PrincipalCollection principals) {
+        ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
+        User user = userService.getUserByUsername(shiroUser.userame);
+        if (user != null) {
+            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+            UserRole role = user.getUserRole();
+            info.addRole(role.getName());
+            info.addStringPermissions(role.getPermissions());
+            return info;
+        } else {
+            return null;
+        }
+    }
 
-	/**
-	 * 自定义Authentication对象，使得Subject除了携带用户的登录名外还可以携带更多信息.
-	 */
-	public static class ShiroUser implements Serializable {
-		private static final long serialVersionUID = -1373760761780840081L;
-		public Integer id;
-		public String userame;
-		public String name;
+    /**
+     * 自定义Authentication对象，使得Subject除了携带用户的登录名外还可以携带更多信息.
+     */
+    public static class ShiroUser implements Serializable {
 
-		public ShiroUser(Integer id, String username, String name) {
-			this.id = id;
-			this.userame = username;
-			this.name = name;
-		}
+        private static final long serialVersionUID = -1373760761780840081L;
+        public Integer id;
+        public String userame;
+        public String name;
 
-		public String getName() {
-			return name;
-		}
+        public ShiroUser(Integer id, String username, String name) {
+            this.id = id;
+            this.userame = username;
+            this.name = name;
+        }
 
-		/**
-		 * 本函数输出将作为默认的<shiro:principal/>输出.
-		 */
-		@Override
-		public String toString() {
-			return userame;
-		}
+        public String getName() {
+            return name;
+        }
 
-		/**
-		 * 重载hashCode,只计算loginName;
-		 */
-		@Override
-		public int hashCode() {
-			return Objects.hashCode(userame);
-		}
+        /**
+         * 本函数输出将作为默认的<shiro:principal/>输出.
+         */
+        @Override
+        public String toString() {
+            return userame;
+        }
 
-		/**
-		 * 重载equals,只计算loginName;
-		 */
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			ShiroUser other = (ShiroUser) obj;
-			if (userame == null) {
-				if (other.userame != null)
-					return false;
-			} else if (!userame.equals(other.userame))
-				return false;
-			return true;
-		}
-	}
+        /**
+         * 重载hashCode,只计算loginName;
+         */
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(userame);
+        }
+
+        /**
+         * 重载equals,只计算loginName;
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            ShiroUser other = (ShiroUser) obj;
+            if (userame == null) {
+                if (other.userame != null) {
+                    return false;
+                }
+            } else if (!userame.equals(other.userame)) {
+                return false;
+            }
+            return true;
+        }
+    }
 }
